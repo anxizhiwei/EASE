@@ -1,7 +1,0 @@
-[2026-07-26 16:32:46] [esae-daemon] daemon started (pid=42793, interval=5.0s)
-[2026-07-26 16:32:55] [esae-daemon] received signal SIGTERM (15), initiating graceful shutdown
-[2026-07-26 16:32:55] [esae-daemon] daemon stopping gracefully
-[2026-07-26 16:32:55] [esae-daemon] daemon stopped (ticks=2, successes=2, failures=0)
-[2026-07-26 16:33:26] [esae-daemon] kill file present (content='anything'), treating as stop signal
-[2026-07-26 16:33:26] [esae-daemon] received signal SIGTERM (15), initiating graceful shutdown
-[2026-07-26 16:33:26] [esae-daemon] test message ok
