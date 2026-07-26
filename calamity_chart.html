@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta charset="utf-8">
+<title>EASE 天灾压力测试 — 研究可视化</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#f8f9fb; display:flex; flex-direction:column; align-items:center; padding:40px 20px; font-family:'Inter',sans-serif; }
+  .container { max-width:1024px; width:100%; background:#fff; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,0.06); padding:36px 40px 28px; }
+  h1 { font-size:20px; font-weight:600; color:#111; }
+  .subtitle { font-size:12.5px; color:#666; margin:4px 0 16px; line-height:1.5; }
+  .legend { display:flex; gap:20px; justify-content:center; margin:16px 0; flex-wrap:wrap; font-size:12px; color:#444; }
+  .meta { background:#f5f6f8; border-radius:10px; padding:14px 18px; font-size:11.5px; color:#555; line-height:1.55; margin-top:14px; }
+  .meta strong { color:#222; }
+  .legend-item { display:flex; align-items:center; gap:6px; }
+  .swatch { width:18px; height:3px; border-radius:1px; }
+  .swatch-cb { width:10px; height:10px; border-radius:2px; }
+  .footer { text-align:center; font-size:10px; color:#aaa; margin-top:12px; }
+  .calamity-table { margin-top:16px; width:100%; border-collapse:collapse; font-size:11px; }
+  .calamity-table th { background:#f1f5f9; padding:6px 10px; text-align:left; font-weight:600; color:#333; }
+  .calamity-table td { padding:5px 10px; border-bottom:1px solid #f1f5f9; color:#555; }
+</style></head>
+<body>
+<div class="container">
+  <h1>EASE 天灾压力测试: 20 分钟·627 代·20 次灾难</h1>
+  <div class="subtitle">4 种随机天灾（冰冻/风暴/冲击/饥荒）下的熔断器自适应生存</div>
+  
+  <svg viewBox="0 0 960 520" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+  <marker id="arrow" markerWidth="6" markerHeight="4" refX="5" refY="2" orient="auto">
+    <polygon points="0 0, 6 2, 0 4" fill="#64748b"/>
+  </marker>
+</defs>
+<line x1="65" y1="45.0" x2="935" y2="45.0" stroke="#e5e7eb" stroke_width="0.5"></line>
+<text x="61" y="49.0" font_family="Inter,sans-serif" font_size="11" fill="#6b7280" text_anchor="end">1.0</text>
+<line x1="65" y1="124.0" x2="935" y2="124.0" stroke="#e5e7eb" stroke_width="0.5"></line>
+<text x="61" y="128.0" font_family="Inter,sans-serif" font_size="11" fill="#6b7280" text_anchor="end">0.8</text>
+<line x1="65" y1="203.0" x2="935" y2="203.0" stroke="#e5e7eb" stroke_width="0.5"></line>
+<text x="61" y="207.0" font_family="Inter,sans-serif" font_size="11" fill="#6b7280" text_anchor="end">0.6</text>
+<line x1="65" y1="282.0" x2="935" y2="282.0" stroke="#e5e7eb" stroke_width="0.5"></line>
+<text x="61" y="286.0" font_family="Inter,sans-serif" font_size="11" fill="#6b7280" text_anchor="end">0.4</text>
+<line x1="65" y1="361.0" x2="935" y2="361.0" stroke="#e5e7eb" stroke_width="0.5"></line>
+<text x="61" y="365.0" font_family="Inter,sans-serif" font_size="11" fill="#6b7280" text_anchor="end">0.2</text>
+<line x1="65" y1="440.0" x2="935" y2="440.0" stroke="#e5e7eb" stroke_width="0.5"></line>
+<text x="61" y="444.0" font_family="Inter,sans-serif" font_size="11" fill="#6b7280" text_anchor="end">0.0</text>
+<text x="65.0" y="454" font_family="Inter,sans-serif" font_size="11" fill="#6b7280" text_anchor="middle">0</text>
+<text x="203.75598086124404" y="454" font_family="Inter,sans-serif" font_size="11" fill="#6b7280" text_anchor="middle">100</text>
+<text x="342.5119617224881" y="454" font_family="Inter,sans-serif" font_size="11" fill="#6b7280" text_anchor="middle">200</text>
+<text x="481.26794258373207" y="454" font_family="Inter,sans-serif" font_size="11" fill="#6b7280" text_anchor="middle">300</text>
+<text x="620.0239234449762" y="454" font_family="Inter,sans-serif" font_size="11" fill="#6b7280" text_anchor="middle">400</text>
+<text x="758.7799043062201" y="454" font_family="Inter,sans-serif" font_size="11" fill="#6b7280" text_anchor="middle">500</text>
+<text x="897.5358851674641" y="454" font_family="Inter,sans-serif" font_size="11" fill="#6b7280" text_anchor="middle">600</text>
+<line x1="65" y1="45" x2="65" y2="440" stroke="#9ca3af" stroke_width="1"></line>
+<line x1="65" y1="440" x2="935" y2="440" stroke="#9ca3af" stroke_width="1"></line>
+<text x="20" y="242.5" font_family="Inter,sans-serif" font_size="12" fill="#374151" text_anchor="middle" transform="rotate(-90,20,242)"Fitness Score</text>
+<text x="500.0" y="512" font_family="Inter,sans-serif" font_size="12" fill="#374151" text_anchor="middle"Generation</text>
+<rect x="66.38755980861244" y="45" width="55.50239234449761" height="395" fill="#34d39915" opacity="0.3"></rect>
+<rect x="149.64114832535887" y="45" width="6.937799043062171" height="395" fill="#34d39915" opacity="0.3"></rect>
+<rect x="163.51674641148327" y="45" width="48.564593301435394" height="395" fill="#34d39915" opacity="0.3"></rect>
+<rect x="246.77033492822966" y="45" width="48.564593301435366" height="395" fill="#34d39915" opacity="0.3"></rect>
+<rect x="336.9617224880383" y="45" width="27.751196172248797" height="395" fill="#34d39915" opacity="0.3"></rect>
+<rect x="434.0909090909091" y="45" width="34.68899521531097" height="395" fill="#34d39915" opacity="0.3"></rect>
+<rect x="503.4688995215311" y="45" width="55.50239234449765" height="395" fill="#34d39915" opacity="0.3"></rect>
+<rect x="593.6602870813397" y="45" width="41.62679425837325" height="395" fill="#34d39915" opacity="0.3"></rect>
+<rect x="676.9138755980862" y="45" width="48.564593301435366" height="395" fill="#34d39915" opacity="0.3"></rect>
+<rect x="767.1052631578947" y="45" width="41.62679425837325" height="395" fill="#34d39915" opacity="0.3"></rect>
+<rect x="864.2344497607655" y="45" width="34.688995215311024" height="395" fill="#34d39915" opacity="0.3"></rect>
+<rect x="128.82775119617224" y="45" width="13.875598086124398" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="156.57894736842104" y="45" width="6.937799043062228" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="212.08133971291866" y="45" width="6.937799043062199" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="225.95693779904306" y="45" width="13.875598086124398" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="295.334928229665" y="45" width="13.875598086124455" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="316.1483253588517" y="45" width="6.937799043062171" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="371.6507177033493" y="45" width="13.875598086124342" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="392.46411483253587" y="45" width="13.875598086124398" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="413.2775119617225" y="45" width="13.875598086124398" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="475.71770334928226" y="45" width="13.875598086124455" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="496.5311004784689" y="45" width="6.937799043062228" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="558.9712918660288" y="45" width="13.875598086124342" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="579.7846889952153" y="45" width="6.937799043062114" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="635.2870813397129" y="45" width="13.875598086124342" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="656.1004784688995" y="45" width="13.875598086124455" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="725.4784688995215" y="45" width="13.875598086124455" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="746.2918660287082" y="45" width="13.875598086124228" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="808.7320574162679" y="45" width="13.875598086124455" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="829.5454545454545" y="45" width="13.875598086124455" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="850.3588516746412" y="45" width="13.875598086124342" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="898.9234449760766" y="45" width="6.937799043062228" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="912.799043062201" y="45" width="13.875598086124342" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="933.6124401913876" y="45" width="1.3875598086124228" height="395" fill="#ef444415" opacity="0.3"></rect>
+<rect x="121.88995215311004" y="45" width="6.937799043062199" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="142.70334928229664" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="219.01913875598086" y="45" width="6.937799043062199" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="239.83253588516746" y="45" width="6.937799043062199" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="309.2105263157895" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="323.0861244019139" y="45" width="13.875598086124398" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="364.7129186602871" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="385.52631578947364" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="406.33971291866027" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="427.1531100478469" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="468.7799043062201" y="45" width="6.937799043062171" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="489.5933014354067" y="45" width="6.937799043062171" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="572.8468899521531" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="586.7224880382774" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="649.1626794258373" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="669.976076555024" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="739.354066985646" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="760.1674641148325" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="822.6076555023924" y="45" width="6.937799043062114" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="843.421052631579" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="905.8612440191388" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<rect x="926.6746411483253" y="45" width="6.937799043062228" height="395" fill="#f59e0b15" opacity="0.3"></rect>
+<path d="M66.4,197.9 L73.3,129.3 L80.3,55.3 L87.2,45.0 L94.1,45.7 L101.1,150.9 L108.0,207.4 L115.0,325.6 L135.8,434.7 L142.7,380.0 L149.6,250.3 L156.6,425.3 L163.5,66.1 L170.5,61.0 L177.4,45.0 L184.3,82.7 L191.3,168.0 L198.2,298.2 L212.1,436.8 L226.0,418.1 L232.9,434.4 L239.8,387.1 L246.8,159.6 L253.7,87.3 L260.6,45.0 L267.6,240.4 L274.5,142.4 L281.5,260.7 L288.4,347.8 L295.3,402.3 L316.1,400.6 L323.1,287.5 L330.0,335.5 L337.0,153.9 L343.9,78.3 L350.8,76.3 L357.8,356.2 L364.7,410.5 L378.6,376.7 L385.5,439.7 L413.3,436.4 L427.2,301.2 L434.1,196.6 L441.0,106.4 L448.0,158.3 L454.9,263.0 L461.8,344.4 L496.5,338.4 L503.5,232.7 L510.4,176.3 L517.3,215.8 L524.3,83.2 L531.2,116.0 L538.2,235.1 L545.1,251.1 L552.0,378.1 L579.8,406.0 L586.7,286.1 L593.7,203.3 L600.6,91.3 L607.5,69.8 L614.5,80.7 L621.4,159.2 L628.3,218.9 L670.0,391.2 L676.9,291.9 L683.9,183.2 L690.8,147.6 L697.7,116.8 L704.7,158.8 L711.6,180.4 L718.5,285.7 L725.5,350.8 L767.1,223.9 L774.0,119.7 L781.0,79.3 L787.9,111.4 L794.9,149.5 L801.8,436.2 L843.4,368.4 L857.3,385.8 L864.2,130.7 L871.2,53.2 L878.1,116.7 L885.0,148.8 L892.0,275.5" fill="none" stroke="#2563eb" stroke_width="2" stroke_linejoin="round" stroke_linecap="round"></path>
+<path d="M65,440 L66.4,197.9 L73.3,129.3 L80.3,55.3 L87.2,45.0 L94.1,45.7 L101.1,150.9 L108.0,207.4 L115.0,325.6 L135.8,434.7 L142.7,380.0 L149.6,250.3 L156.6,425.3 L163.5,66.1 L170.5,61.0 L177.4,45.0 L184.3,82.7 L191.3,168.0 L198.2,298.2 L212.1,436.8 L226.0,418.1 L232.9,434.4 L239.8,387.1 L246.8,159.6 L253.7,87.3 L260.6,45.0 L267.6,240.4 L274.5,142.4 L281.5,260.7 L288.4,347.8 L295.3,402.3 L316.1,400.6 L323.1,287.5 L330.0,335.5 L337.0,153.9 L343.9,78.3 L350.8,76.3 L357.8,356.2 L364.7,410.5 L378.6,376.7 L385.5,439.7 L413.3,436.4 L427.2,301.2 L434.1,196.6 L441.0,106.4 L448.0,158.3 L454.9,263.0 L461.8,344.4 L496.5,338.4 L503.5,232.7 L510.4,176.3 L517.3,215.8 L524.3,83.2 L531.2,116.0 L538.2,235.1 L545.1,251.1 L552.0,378.1 L579.8,406.0 L586.7,286.1 L593.7,203.3 L600.6,91.3 L607.5,69.8 L614.5,80.7 L621.4,159.2 L628.3,218.9 L670.0,391.2 L676.9,291.9 L683.9,183.2 L690.8,147.6 L697.7,116.8 L704.7,158.8 L711.6,180.4 L718.5,285.7 L725.5,350.8 L767.1,223.9 L774.0,119.7 L781.0,79.3 L787.9,111.4 L794.9,149.5 L801.8,436.2 L843.4,368.4 L857.3,385.8 L864.2,130.7 L871.2,53.2 L878.1,116.7 L885.0,148.8 L892.0,275.5 L935,440Z" fill="#2563eb" opacity="0.06"></path>
+<line x1="116.33971291866028" y1="45" x2="116.33971291866028" y2="440" stroke="#60a5fa" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="116.33971291866028" y="41" font_size="12" text_anchor="middle" fill="#60a5fa">冰冻期</text>
+<line x1="151.0287081339713" y1="45" x2="151.0287081339713" y2="440" stroke="#f97316" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="151.0287081339713" y="41" font_size="12" text_anchor="middle" fill="#f97316">失败风暴</text>
+<line x1="203.75598086124404" y1="45" x2="203.75598086124404" y2="440" stroke="#a78bfa" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="203.75598086124404" y="41" font_size="12" text_anchor="middle" fill="#a78bfa">参数冲击</text>
+<line x1="228.73205741626793" y1="45" x2="228.73205741626793" y2="440" stroke="#ef4444" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="228.73205741626793" y="41" font_size="12" text_anchor="middle" fill="#ef4444">资源饥荒</text>
+<line x1="264.8086124401914" y1="45" x2="264.8086124401914" y2="440" stroke="#ef4444" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="264.8086124401914" y="41" font_size="12" text_anchor="middle" fill="#ef4444">资源饥荒</text>
+<line x1="325.8612440191387" y1="45" x2="325.8612440191387" y2="440" stroke="#ef4444" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="325.8612440191387" y="41" font_size="12" text_anchor="middle" fill="#ef4444">资源饥荒</text>
+<line x1="356.3875598086125" y1="45" x2="356.3875598086125" y2="440" stroke="#60a5fa" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="356.3875598086125" y="41" font_size="12" text_anchor="middle" fill="#60a5fa">冰冻期</text>
+<line x1="403.5645933014354" y1="45" x2="403.5645933014354" y2="440" stroke="#60a5fa" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="403.5645933014354" y="41" font_size="12" text_anchor="middle" fill="#60a5fa">冰冻期</text>
+<line x1="432.70334928229664" y1="45" x2="432.70334928229664" y2="440" stroke="#ef4444" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="432.70334928229664" y="41" font_size="12" text_anchor="middle" fill="#ef4444">资源饥荒</text>
+<line x1="464.61722488038276" y1="45" x2="464.61722488038276" y2="440" stroke="#60a5fa" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="464.61722488038276" y="41" font_size="12" text_anchor="middle" fill="#60a5fa">冰冻期</text>
+<line x1="514.5693779904307" y1="45" x2="514.5693779904307" y2="440" stroke="#ef4444" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="514.5693779904307" y="41" font_size="12" text_anchor="middle" fill="#ef4444">资源饥荒</text>
+<line x1="565.909090909091" y1="45" x2="565.909090909091" y2="440" stroke="#f97316" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="565.909090909091" y="41" font_size="12" text_anchor="middle" fill="#f97316">失败风暴</text>
+<line x1="629.7368421052631" y1="45" x2="629.7368421052631" y2="440" stroke="#f97316" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="629.7368421052631" y="41" font_size="12" text_anchor="middle" fill="#f97316">失败风暴</text>
+<line x1="653.3253588516747" y1="45" x2="653.3253588516747" y2="440" stroke="#ef4444" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="653.3253588516747" y="41" font_size="12" text_anchor="middle" fill="#ef4444">资源饥荒</text>
+<line x1="686.6267942583733" y1="45" x2="686.6267942583733" y2="440" stroke="#a78bfa" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="686.6267942583733" y="41" font_size="12" text_anchor="middle" fill="#a78bfa">参数冲击</text>
+<line x1="747.6794258373205" y1="45" x2="747.6794258373205" y2="440" stroke="#f97316" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="747.6794258373205" y="41" font_size="12" text_anchor="middle" fill="#f97316">失败风暴</text>
+<line x1="797.6315789473683" y1="45" x2="797.6315789473683" y2="440" stroke="#60a5fa" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="797.6315789473683" y="41" font_size="12" text_anchor="middle" fill="#60a5fa">冰冻期</text>
+<line x1="846.1961722488038" y1="45" x2="846.1961722488038" y2="440" stroke="#60a5fa" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="846.1961722488038" y="41" font_size="12" text_anchor="middle" fill="#60a5fa">冰冻期</text>
+<line x1="893.3732057416267" y1="45" x2="893.3732057416267" y2="440" stroke="#ef4444" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="893.3732057416267" y="41" font_size="12" text_anchor="middle" fill="#ef4444">资源饥荒</text>
+<line x1="916.9617224880383" y1="45" x2="916.9617224880383" y2="440" stroke="#60a5fa" stroke_width="1.5" stroke_dasharray="4,3" opacity="0.6"></line>
+<text x="916.9617224880383" y="41" font_size="12" text_anchor="middle" fill="#60a5fa">冰冻期</text>
+<text x="116.33971291866028" y="432" font_size="9" fill="#3b82f6" text_anchor="middle"1st: 🧊 冰冻期</text>
+<line x1="429.92822966507174" y1="164.13599999999997" x2="549.9282296650717" y2="140.13599999999997" stroke="#dc2626" stroke_width="0.8"></line>
+<rect x="454.92822966507174" y="126.13599999999997" width="130" height="20" rx="4" fill="#fef2f2" stroke="#fecaca" stroke_width="0.5"></rect>
+<text x="459.92822966507174" y="138.13599999999997" font_size="10" fill="#b91c1c" font_weight="600"恢复: fitness=0.68</text>
+<circle cx="87.20095693779905" cy="45.0" r="6" fill="#dc2626" stroke="#fff" stroke_width="2"></circle>
+<line x1="87.20095693779905" y1="35.0" x2="227.20095693779905" y2="80" stroke="#dc2626" stroke_width="0.8"></line>
+<rect x="117.20095693779905" y="62" width="170" height="22" rx="4" fill="#fef2f2" stroke="#fecaca" stroke_width="0.5"></rect>
+<text x="122.20095693779905" y="77" font_size="11" fill="#b91c1c" font_weight="700"🏆 最高 fitness=1.000</text>
+<text x="941" y="124.0" font_size="9" fill="#34d399"CLOSED 50%</text>
+<text x="941" y="262.25" font_size="9" fill="#f59e0b"HALF_OPEN 17%</text>
+<text x="941" y="380.75" font_size="9" fill="#ef4444"OPEN 33%</text>
+<rect x="695" y="360" width="230" height="70" rx="6" fill="#f8fafc" stroke="#e2e8f0" stroke_width="0.5"></rect>
+<text x="705" y="378" font_size="9" fill="#475569"天灾: 20次 | 存活: 48.0%</text>
+<text x="705" y="392" font_size="9" fill="#475569"CB: CLOSED=316 OPEN=204</text>
+<text x="705" y="406" font_size="9" fill="#475569"HALF_OPEN=107</text>
+  </svg>
+  
+  <div class="legend">
+    <div class="legend-item"><div class="swatch" style="background:#2563eb"></div>Fitness</div>
+    <div class="legend-item"><div class="swatch-cb" style="background:#34d399"></div>CLOSED</div>
+    <div class="legend-item"><div class="swatch-cb" style="background:#f59e0b"></div>HALF_OPEN</div>
+    <div class="legend-item"><div class="swatch-cb" style="background:#ef4444"></div>OPEN</div>
+    <div class="legend-item"><span style="font-size:12px;">❄️🧊🌪️💥🔥</span> 天灾事件</div>
+  </div>
+  
+  <div class="meta">
+    <strong>Figure 1:</strong> EASE self-evolution under randomized pressure testing. 
+    <strong>Settings:</strong> 20 min run, 2s/tick, 627 generations. 
+    Calamities injected at random intervals (30-90s): 4 types × 20 total events. 
+    <strong>Key findings:</strong> (1) Circuit Breaker spends 50% CLOSED / 17% HALF_OPEN / 33% OPEN, 
+    actively limiting damage during calamities. (2) Peak fitness=1.000, avg=0.363 (dragged by 
+    sinusoidal baseline + frozen periods). (3) Survival rate (fitness&gt;0.3)=48% despite 326 
+    survival-pressure events. (4) Recovery tracking needs improvement — 4 recoveries detected 
+    with instant fitness bounce-back after calamity expiry. 
+    <strong>N=1</strong> (single continuous run). Calamity duration: 1-19 ticks.
+    <strong>Target:</strong> Maintain avg fitness &gt;0.5, recover within 5 gens. 
+    <strong>Status:</strong> ⚠️ Partially met — CB logic verified, recovery logic needs tuning.
+  </div>
+  
+  <table class="calamity-table">
+    <tr><th>#</th><th>Gen</th><th>类型</th><th>持续(tick)</th><th>事前fitness</th><th>CB响应</th></tr>
+    <tr><td>1</td><td>37</td><td>🧊 冰冻期</td><td>10</td><td>0.228</td><td>✅ OPEN</td></tr><tr><td>2</td><td>62</td><td>🌪️ 失败风暴</td><td>7</td><td>0.497</td><td>—</td></tr><tr><td>3</td><td>100</td><td>💥 参数冲击</td><td>1</td><td>0.354</td><td>—</td></tr><tr><td>4</td><td>118</td><td>🔥 资源饥荒</td><td>8</td><td>0.087</td><td>✅ OPEN</td></tr><tr><td>5</td><td>144</td><td>🔥 资源饥荒</td><td>6</td><td>0.828</td><td>—</td></tr><tr><td>6</td><td>188</td><td>🔥 资源饥荒</td><td>6</td><td>0.408</td><td>—</td></tr><tr><td>7</td><td>210</td><td>🧊 冰冻期</td><td>14</td><td>0.817</td><td>—</td></tr><tr><td>8</td><td>244</td><td>🧊 冰冻期</td><td>19</td><td>0.069</td><td>✅ OPEN</td></tr><tr><td>9</td><td>265</td><td>🔥 资源饥荒</td><td>4</td><td>0.975</td><td>—</td></tr><tr><td>10</td><td>288</td><td>🧊 冰冻期</td><td>19</td><td>0.188</td><td>✅ OPEN</td></tr><tr><td>11</td><td>324</td><td>🔥 资源饥荒</td><td>6</td><td>0.834</td><td>—</td></tr><tr><td>12</td><td>361</td><td>🌪️ 失败风暴</td><td>9</td><td>0.000</td><td>✅ OPEN</td></tr><tr><td>13</td><td>407</td><td>🌪️ 失败风暴</td><td>12</td><td>0.425</td><td>—</td></tr><tr><td>14</td><td>424</td><td>🔥 资源饥荒</td><td>3</td><td>0.000</td><td>✅ OPEN</td></tr><tr><td>15</td><td>448</td><td>💥 参数冲击</td><td>2</td><td>0.752</td><td>—</td></tr><tr><td>16</td><td>492</td><td>🌪️ 失败风暴</td><td>11</td><td>0.000</td><td>✅ OPEN</td></tr><tr><td>17</td><td>528</td><td>🧊 冰冻期</td><td>15</td><td>0.548</td><td>—</td></tr><tr><td>18</td><td>563</td><td>🧊 冰冻期</td><td>11</td><td>0.252</td><td>✅ OPEN</td></tr><tr><td>19</td><td>597</td><td>🔥 资源饥荒</td><td>6</td><td>0.336</td><td>—</td></tr><tr><td>20</td><td>614</td><td>🧊 冰冻期</td><td>14</td><td>0.000</td><td>✅ OPEN</td></tr>
+  </table>
+  
+  <div class="footer">EASE — Emergent-Stitching Architecture for Evolution · Calamity Test 2026-07-26 · seed=42</div>
+</div>
+</body>
+</html>
