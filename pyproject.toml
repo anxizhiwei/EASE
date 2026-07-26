@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=64.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "esae"
+version = "0.1.0"
+description = "ESAE — Self-evolving agent kernel (Phase 0 / L3)"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+dependencies = []  # L3 core = stdlib only
+
+[project.optional-dependencies]
+tracing = []  # future: json (already stdlib)
+test = ["pytest>=7.0"]

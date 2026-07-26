@@ -1,0 +1,8 @@
+{"ts": "2026-07-26T16:33:55.851441", "id": "test-evidence", "signal": "accepted", "context": null}
+{"ts": "2026-07-26T16:34:08.637533", "id": "e1", "signal": "accepted", "context": null}
+{"ts": "2026-07-26T16:34:08.637622", "id": "e2", "signal": "dismissed", "reason": null}
+{"ts": "2026-07-26T16:34:16.165772", "id": "e1", "signal": "accepted", "context": null}
+{"ts": "2026-07-26T16:34:30.132461", "id": "e1", "signal": "accepted", "context": null}
+{"ts": "2026-07-26T16:34:30.132529", "id": "e2", "signal": "dismissed", "reason": null}
+{"ts": "2026-07-26T16:34:40.615345", "id": "e1", "signal": "accepted", "context": null}
+{"ts": "2026-07-26T16:34:40.615414", "id": "e2", "signal": "dismissed", "reason": null}
