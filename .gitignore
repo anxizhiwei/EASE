@@ -23,3 +23,10 @@ Thumbs.db
 
 # ESAE runtime
 genomes/
+
+# ESAE runtime
+.venv/
+genomes/
+snapshots/
+results/generations/
+results/evolution_log_*.jsonl
