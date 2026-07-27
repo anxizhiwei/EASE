@@ -1,0 +1,17 @@
+# EASE Docker ignore — exclude unnecessary files from build context
+.git/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+.DS_Store
+*.egg-info/
+.venv/
+venv/
+results/
+logs/
+genomes/
+AGENTS.md
+calamity_chart.html
+calamity_test.py

@@ -307,8 +307,8 @@ class EvidenceTracker:
             r
             for r in self._recent
             if isinstance(r.get("ts"), str)
-            and self._parse_ts(r["ts"]) is not None
-            and self._parse_ts(r["ts"]) >= cutoff
+            and (parsed := self._parse_ts(r["ts"])) is not None
+            and parsed >= cutoff
         ]
         return {"kept": kept, "dropped": dropped}
 
@@ -321,6 +321,9 @@ class EvidenceTracker:
             with self.log_path.open("a", encoding="utf-8") as f:
                 f.write(json.dumps(record, ensure_ascii=False) + "\n")
         except OSError:
+            # 写失败：事件丢失但不应崩溃；stderr 告警
+            import sys
+            print(f"[EASE] EvidenceTracker write failed: {self.log_path}", file=sys.stderr)
             return
         self._recent.append(record)
         if len(self._recent) > 10_000:

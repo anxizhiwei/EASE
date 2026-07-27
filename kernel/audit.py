@@ -3,7 +3,6 @@
 参考：Raven ToolAuditHook（但修复了 except OSError: pass 安全缺陷）。
 """
 import json
-import math
 import os
 import fcntl
 from datetime import datetime
@@ -13,12 +12,10 @@ from typing import Optional
 
 class ESAEError(Exception):
     """ESAE 模块异常基类。"""
-    pass
 
 
 class AuditError(ESAEError):
     """审计写入失败。ESAE 应停止。"""
-    pass
 
 
 class AuditLog:

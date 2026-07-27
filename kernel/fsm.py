@@ -207,4 +207,4 @@ class FSM:
             try:
                 listener(old, new, event)
             except Exception:
-                pass  # 监听器不得中断状态机
+                pass  # nosec

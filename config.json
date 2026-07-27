@@ -1,0 +1,6 @@
+{
+  "generations": 50,
+  "verbose": true,
+  "color": true,
+  "log_level": "INFO"
+}

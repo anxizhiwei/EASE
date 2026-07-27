@@ -86,7 +86,7 @@ class Span:
         # 将自己注册到父 span 的 children
         if self._parent is not None and self._parent is not self:
             self._parent.children.append(self)
-        _current_span.reset(self._token)
+        _current_span.reset(self._token)  # type: ignore[arg-type]
         self._token = None
         # 写入存储
         target = self._store if self._store is not None else tracer
@@ -127,10 +127,11 @@ class Span:
         }
 
     def _trace_id(self) -> str:
-        """派生 trace ID（基于根 span）。"""
-        if self.parent_id is None:
-            return f"trace-{self.span_id}"
-        return f"trace-{self.span_id}"
+        """派生 trace ID（回溯至根 span）。"""
+        root = self
+        while root._parent is not None and root._parent is not root:
+            root = root._parent
+        return f"trace-{root.span_id}"
 
 
 # ═══════════════════════════════════════════════════════════════════════
@@ -205,7 +206,7 @@ def instrument(
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             if not _enabled:
                 return func(*args, **kwargs)
-            attrs = {}
+            attrs: dict[str, Any] = {}
             with Span(span_name, span_type=span_type, attributes=attrs) as span:
                 try:
                     result = func(*args, **kwargs)
@@ -233,7 +234,7 @@ class TraceStore:
     """
 
     def __init__(self, log_dir: Optional[Path] = None) -> None:
-        self._log_dir = (log_dir or Path.home() / ".esae" / "traces").resolve()
+        self._log_dir = (log_dir or Path.home() / ".hermes" / "esae" / "traces").resolve()
         self._log_dir.mkdir(parents=True, exist_ok=True)
         self._seen_sha1: set[str] = set()
 
@@ -248,7 +249,7 @@ class TraceStore:
             return
         data = span.to_dict()
         payload = json.dumps(data, ensure_ascii=False, sort_keys=True)
-        sha1 = hashlib.sha1(payload.encode()).hexdigest()
+        sha1 = hashlib.sha1(payload.encode(), usedforsecurity=False).hexdigest()  # nosec
         if sha1 in self._seen_sha1:
             return
         self._seen_sha1.add(sha1)

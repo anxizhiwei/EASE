@@ -208,7 +208,9 @@ class CircuitBreaker:
 
         elif current == FSMState.HALF_OPEN:
             # HALF_OPEN 下任何失败立即回到 OPEN
-            if any(c["failed"] for c in self._calls):
+            # 只检查最近 half_open_max_permits 条（HALF_OPEN 期间的实际试探）
+            recent = list(self._calls)[-self._half_open_max_permits:]
+            if any(c["failed"] for c in recent):
                 self._fsm.transition(FSMState.OPEN)
                 self._half_open_permits_used = 0
 

@@ -1,91 +1,83 @@
-"""EASE — Emergent-Stitching Architecture for Evolution
-终端应用入口。
+"""EASE CLI — Unified command-line interface for EASE.
+
+Hermes-style framework (argparse, banner, output helpers) with EASE-specific
+commands.
+
+Subcommands:
+    ease evolve                      Run evolution loop
+    ease character {create,show,list}  Character management
+    ease status                      Show system status
+    ease config {show,set}           Configuration management
+    ease version                     Show version
 """
-import sys, os
 
-from .banner import BANNER
-from .commands.evolve import CmdEvolve
-from .commands.character import CmdCharacter
-from .commands.status import CmdStatus
+from __future__ import annotations
 
-__version__ = "0.2.0"
+import sys
+
+from cli._parser import build_top_level_parser
+from cli.banner import BANNER, __version__, get_version_str
+from cli.commands.evolve import add_parser as add_evolve
+from cli.commands.character import add_parser as add_character
+from cli.commands.status import add_parser as add_status
+from cli.commands.config import add_parser as add_config
 
 
-def main():
-    args = sys.argv[1:] if len(sys.argv) > 1 else []
-    
-    if not args or args[0] in ("-h", "--help", "help"):
-        _show_help()
+def main() -> None:
+    """Main entry point for the EASE CLI.
+
+    Architecture mirrors Hermes CLI:
+      1. Build parser via _parser.build_top_level_parser()
+      2. Register subcommands from each command module's add_parser()
+      3. Dispatch to the matching command's run() function
+    """
+    parser, subparsers = build_top_level_parser()
+
+    # ─── Register commands ───────────────────────────────────────────────
+    add_evolve(subparsers)
+    add_character(subparsers)
+    add_status(subparsers)
+    add_config(subparsers)
+
+    # Standalone version subcommand
+    p_version = subparsers.add_parser("version", help="显示版本信息")
+
+    # ─── Dispatch ────────────────────────────────────────────────────────
+    # No args → show banner + help
+    if len(sys.argv) == 1:
+        print(BANNER)
+        print()
+        parser.print_help()
         return
-    
-    if args[0] in ("-v", "--version", "version"):
-        print(f"EASE v{__version__}")
+
+    args = parser.parse_args()
+
+    # --version / -V flag
+    if getattr(args, "version", False):
+        print(get_version_str())
         return
-    
-    cmd, *rest = args
-    
+
+    cmd = args.command
+
     if cmd == "evolve":
-        CmdEvolve(rest).run()
+        from cli.commands.evolve import run as run_evolve
+        run_evolve(args)
     elif cmd == "character":
-        CmdCharacter(rest).run()
+        from cli.commands.character import run as run_character
+        run_character(args)
     elif cmd == "status":
-        CmdStatus(rest).run()
-    elif cmd == "ui":
-        _show_ui()
-    elif cmd == "shell":
-        _repl()
+        from cli.commands.status import run as run_status
+        run_status(args)
+    elif cmd == "config":
+        from cli.commands.config import run as run_config
+        run_config(args)
+    elif cmd == "version":
+        print(get_version_str())
     else:
-        print(f"未知命令: {cmd}")
-        _show_help()
+        print(BANNER)
+        print()
+        parser.print_help()
 
 
-def _show_help():
-    print(BANNER)
-    print()
-    print("  用法: ease <命令> [选项]")
-    print()
-    print("  命令:")
-    print("    evolve        运行进化"
-          "\n    character     人物状态管理"
-          "\n    ui            显示界面"
-          "\n    status        系统状态"
-          "\n    shell         交互式终端"
-          "\n    version       显示版本"
-          "\n    help          显示帮助")
-    print()
-
-
-def _show_ui():
-    """显示角色界面（需先 evolution 创造方法）。"""
-    try:
-        from kernel.daemon import ESAEDaemon
-        d = ESAEDaemon()
-        if hasattr(d, "render_all_characters"):
-            print(d.render_all_characters())
-        else:
-            print("⚠️  角色界面功能尚未进化。运行 ease character <name> --hp ... 创建角色。")
-    except Exception as e:
-        print(f"⚠️  界面暂时不可用: {e}")
-
-
-def _repl():
-    """交互式终端。"""
-    import readline
-    print(BANNER)
-    print(f"  EASE v{__version__} 交互式终端 — 输入 help 查看命令\n")
-    while True:
-        try:
-            line = input("ease> ").strip()
-        except (EOFError, KeyboardInterrupt):
-            print("\n再见。")
-            break
-        if not line:
-            continue
-        if line == "exit" or line == "quit":
-            break
-        if line == "help":
-            _show_help()
-            continue
-        # 当作命令重新调用
-        sys.argv = ["ease"] + line.split()
-        main()
+if __name__ == "__main__":
+    main()
