@@ -56,10 +56,16 @@ def _show_help():
 
 
 def _show_ui():
-    """显示角色界面（调用 daemon.py 的 render 方法）。"""
-    from kernel.daemon import ESAEDaemon
-    d = ESAEDaemon()
-    print(d.render_all_characters())
+    """显示角色界面（需先 evolution 创造方法）。"""
+    try:
+        from kernel.daemon import ESAEDaemon
+        d = ESAEDaemon()
+        if hasattr(d, "render_all_characters"):
+            print(d.render_all_characters())
+        else:
+            print("⚠️  角色界面功能尚未进化。运行 ease character <name> --hp ... 创建角色。")
+    except Exception as e:
+        print(f"⚠️  界面暂时不可用: {e}")
 
 
 def _repl():
